@@ -1,20 +1,23 @@
 
 package crossroadlights;
 
+import java.util.Observable;
+import java.util.Observer;
+
 /**
  *
  * @author group 3
  */
 
 
-public class TrafficLight {
+public class TrafficLight implements Observer{
     public static final int Red = 0;
     public static final int Orange = 1;
     public static final int Green = 2;
-    private int LightColour = Red;
+    private int LightColour;
     
-    TrafficLight() {   
-    }
+    TrafficLight() {
+    LightColour = Red;}
 
     public void setLight(int ChangeTo){
 
@@ -27,6 +30,11 @@ public class TrafficLight {
     public int getLight()
     {
     return LightColour;
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); 
     }
     
 }

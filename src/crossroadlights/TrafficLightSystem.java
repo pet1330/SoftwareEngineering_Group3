@@ -1,5 +1,7 @@
 package crossroadlights;
 
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Scanner;
 
 /**
@@ -7,21 +9,21 @@ import java.util.Scanner;
  * @author group 3
  */
 
-public class TrafficLightSystem extends Thread {
+public class TrafficLightSystem extends Thread{
 
-    private boolean buttonPushed = false;
+    
     private int currentSequence = 0;
     private TrafficLight[] lightSystem = {new TrafficLight(), new TrafficLight(), new TrafficLight(), new TrafficLight()};
 
     public static void Start() {
         TrafficLightSystem syst = new TrafficLightSystem();
+        Button button = Button.start();
         new Thread(syst).start();
         while (true) {
-            if (syst.buttonPushed()) {
+            if (button.checkButton()) {
                 syst.setAllLightsRed();
                 syst.waitfor(5);
-                syst.buttonPushed = false;
-                clearConsole();
+                button.resetButton();
             } else {
                 switch (syst.currentSequence) {
                     case 0:
@@ -62,31 +64,11 @@ public class TrafficLightSystem extends Thread {
         }
     }
 
-    private void pushButton() {
-        buttonPushed = true;
-    }
-
-    private boolean buttonPushed() {
-        return buttonPushed;
-    }
-
-    @Override
-    public void run() {
-        while (true) {
-            Scanner sc = new Scanner(System.in);
-            sc.nextLine();
-            pushButton();
-            System.out.print("Button Pushed");
-        }
-
-    }
-
     private void PrintMap() {
 
-        // for (int i = 0; i < 321; i++) {
-        //    System.out.println("\b");
-        // }
-        clearConsole();
+         for (int i = 0; i < 321; i++) {
+            System.out.println("\b");
+         }
         System.out.println("     |   |   |      ");
         System.out.println("     |       |      ");
         System.out.println("     |   |   |      ");
@@ -103,11 +85,6 @@ public class TrafficLightSystem extends Thread {
         System.out.println("     |   |   |      ");
         System.out.println("     |       |      ");
         System.out.println("     |   |   |      ");
-    }
-
-    private static void clearConsole() {
-        System.out.print("\u001b[2J" + "\u001b[H");
-        System.out.flush();
     }
 
     private void waitfor(int seconds) {
