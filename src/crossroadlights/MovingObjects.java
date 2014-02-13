@@ -8,6 +8,6 @@ package crossroadlights;
 public class MovingObjects {
 
     public static void main(String[] args) {
-        TrafficLightSystem.Start();
+        LocalServer.Start();
     }
 }

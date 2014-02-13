@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package crossroadlights;
 
 import java.util.Observable;
@@ -11,7 +6,7 @@ import java.util.Scanner;
 
 /**
  *
- * @author computing
+ * @author Group 3
  */
 public class Button implements Runnable, Observer {
 
@@ -29,7 +24,6 @@ public class Button implements Runnable, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-
     }
 
     public void pushButton() {
