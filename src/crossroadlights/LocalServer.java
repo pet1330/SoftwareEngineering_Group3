@@ -15,31 +15,36 @@ public class LocalServer extends Thread {
     private static PrintWriter log;
     private static boolean run = true;
     private static boolean logCreated = false;
+    private ServerSocket server;
 
-    public LocalServer(int port) throws IOException {
+    private LocalServer() {
+    }
+
+    public static void Start(int port) throws IOException {
+        LocalServer syst = new LocalServer();
         writeToLog("LocalServer initalising on port " + port);
-        ServerSocket server = new ServerSocket(port);
-        server.setSoTimeout(1000);
+        syst.server = new ServerSocket(port);
+        syst.server.setSoTimeout(1000);
+
         while (run) {
             Socket client = null;
             try {
-                client = server.accept();
-            } catch (SocketTimeoutException e) {
-            }
+                client = syst.server.accept();
+            } catch (SocketTimeoutException e) { 
+            /* Client not attempting to connect */}
             if (client != null) {
                 System.out.println("Client " + client.getInetAddress() + "is connected to the Server");
-                ClientHandler handler = new ClientHandler(client, this);
+                ClientHandler handler = new ClientHandler(client, syst);
                 writeToLog("New Client connection accepted from: " + client.getInetAddress());
                 handler.start();
             }
         }
+
         if (!run) {
+            
+            
             synchronized (ClientHandler.handlers) {
-
-                Iterator myHandlers = ClientHandler.handlers.iterator();
-
-                while (myHandlers.hasNext()) {
-                    ClientHandler handler = (ClientHandler) myHandlers.next();
+                for(ClientHandler handler : ClientHandler.handlers){
                     handler.terminateHandler();
                 }
             }
@@ -49,49 +54,23 @@ public class LocalServer extends Thread {
         }
     }
 
-    //Deprecated Function
-    public static void Start() {
-        LocalServer syst = new LocalServer();
-        Button button = Button.start();
-        new Thread(syst).start();
-        while (true) {
-            if (button.checkButton()) {
-                syst.setAllLightsRed();
-                syst.waitfor(5);
-                button.resetButton();
-            } else {
-                switch (syst.currentSequence) {
-                    case 0:
-                        syst.PrintMap();
-                        syst.lightSystem[0].setLight(TrafficLight.Green);
-                        syst.lightSystem[1].setLight(TrafficLight.Red);
-                        syst.lightSystem[2].setLight(TrafficLight.Red);
-                        syst.lightSystem[3].setLight(TrafficLight.Green);
-                        syst.currentSequence = 1;
-                        syst.waitfor(5);
-                        break;
-                    case 1:
-                        syst.PrintMap();
-                        syst.lightSystem[0].setLight(TrafficLight.Red);
-                        syst.lightSystem[1].setLight(TrafficLight.Green);
-                        syst.lightSystem[2].setLight(TrafficLight.Green);
-                        syst.lightSystem[3].setLight(TrafficLight.Red);
-                        syst.currentSequence = 0;
-                        syst.waitfor(5);
-                        break;
-                    default:
-                        System.out.println("Default ERROR");
-                        syst.setAllLightsRed();
-                        syst.waitfor(5);
-                        break;
-                }
+    public static void writeToLog(String toLog) {
+        if (!logCreated) {
+            try {
+                log = new PrintWriter(new FileWriter("LocalServerLog.txt", true), true);
+            } catch (IOException e) {
             }
+            logCreated = true;
         }
-
+        log.println(Calendar.getInstance().getTime().toString() + " - " + toLog);
     }
 
-    //Deprecated Function
-    private LocalServer() {
+    public static void terminateServer() {
+        run = false;
+    }
+
+    public static boolean state() {
+        return run;
     }
 
     //Deprecated Function
@@ -131,24 +110,5 @@ public class LocalServer extends Thread {
         while ((System.currentTimeMillis() - startTime) < (1000 * seconds)) {
             //just keep looping...
         }
-    }
-
-    public static void writeToLog(String toLog) {
-        if (!logCreated) {
-            try {
-                log = new PrintWriter(new FileWriter("LocalServerLog.txt", true), true);
-            } catch (IOException e) {
-            }
-            logCreated = true;
-        }
-        log.println(Calendar.getInstance().getTime().toString() + " - " + toLog);
-    }
-
-    public static void terminateServer() {
-        run = false;
-    }
-
-    public static boolean state() {
-        return run;
     }
 }

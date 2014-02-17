@@ -67,6 +67,7 @@ public class ClientHandler extends Thread {
 
 //==============================================================================
                     // @TODO LOGIC CODE HERE
+                    // e.g. command processing
 //==============================================================================
                 } catch (ClassNotFoundException e) {
                 }
@@ -101,6 +102,7 @@ public class ClientHandler extends Thread {
 
     public void terminateHandler() {
         run = false;
+        LocalServer.writeToLog("Client " + LightID + " at " + clientIP + " has disconnected from the Server");
     }
 
     private static void synchroSendCommand(ClientHandler handler, Command command) {

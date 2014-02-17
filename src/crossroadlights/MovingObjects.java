@@ -1,5 +1,7 @@
 package crossroadlights;
 
+import java.io.IOException;
+
 /**
  *
  * @author Group 3
@@ -7,7 +9,8 @@ package crossroadlights;
 
 public class MovingObjects {
 
-    public static void main(String[] args) {
-        LocalServer.Start();
+    public static void main(String[] args) throws IOException {
+        //Depricated
+        LocalServer.Start(1560);
     }
 }
