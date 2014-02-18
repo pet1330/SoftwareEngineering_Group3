@@ -11,6 +11,7 @@ public class MovingObjects {
 
     public static void main(String[] args) throws IOException {
         //Depricated
-        LocalServer.Start(1560);
+        //LocalServer.Start(1560);
+        LocalServer.Start();
     }
 }
