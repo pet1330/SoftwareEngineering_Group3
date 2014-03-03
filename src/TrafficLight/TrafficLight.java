@@ -2,6 +2,7 @@ package TrafficLight;
 
 import Command.Command;
 import java.io.*;
+import java.util.Scanner;
 
 public class TrafficLight implements Runnable {
 
@@ -32,11 +33,20 @@ public class TrafficLight implements Runnable {
                     disconnect();
                 }
 
-
                 if (inputedText.equals("--quitserver")) {
                     Command killCommand = new Command();
                     killCommand.setServerQuit(true);
                     client.sendCommand(killCommand);
+                }
+                
+                if (inputedText.equals("push button")) {
+                    System.out.println("Which traffic light was the button pressed at? ");
+                    Scanner sc = new Scanner(System.in);
+                    sc.nextLine();
+                    Command buttonPush = new Command();
+                    buttonPush.setCommand("button push");
+                    buttonPush.setCommandFrom(sc.toString());
+                    client.sendCommand(buttonPush);
                 }
             } catch (IOException ex) {
             }
