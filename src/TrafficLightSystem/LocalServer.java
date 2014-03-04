@@ -26,6 +26,7 @@ public class LocalServer extends Thread {
                 client = server.accept();
             } catch (SocketTimeoutException e) {
             }
+            
             if (client != null) {
                 System.out.println("Connection to Server accepted from: " + client.getInetAddress());
                 SystemHandler handler = new SystemHandler(client);

@@ -48,6 +48,12 @@ public class TrafficLight implements Runnable {
                     buttonPush.setCommandFrom(sc.toString());
                     client.sendCommand(buttonPush);
                 }
+                
+                if (inputedText.equals("car")) {
+                    Command vehicleDetected = new Command();
+                    vehicleDetected.setCommand("vehicle detected");
+                    client.sendCommand(vehicleDetected);
+                }
             } catch (IOException ex) {
             }
         }
