@@ -7,7 +7,7 @@ import java.util.*;
 /**
  *
  * @author group 3
- */
+ **/
 public class LocalServer extends Thread {
 
     private static PrintWriter log;
@@ -19,6 +19,17 @@ public class LocalServer extends Thread {
         writeToLog("LocalServer Created on port " + port);
         System.out.println("LocalServer Created on port " + port);
         server.setSoTimeout(500);
+        
+        // Send data to Johns server
+        SendData output = new SendData();
+        output.run();
+        //Thread t1 = new Thread(output);
+        //t1.start();
+        
+        // Wait for response from Johns server
+        RecieveData input = new RecieveData();
+        Thread t2 = new Thread(input);
+        t2.start();
 
         while (run) {
             Socket client = null;
