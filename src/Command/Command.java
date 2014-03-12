@@ -4,6 +4,11 @@ package Command;
  *
  * @author Group 3
  */
+
+/* 
+ * Allows an object to be serialised and sent through an object 
+ * socket and reassembles at the other end
+ */
 import java.io.Serializable;
 
 public class Command implements Serializable {

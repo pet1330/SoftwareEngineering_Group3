@@ -14,19 +14,23 @@ public class TrafficLightClient implements Runnable {
     private Thread uiListener;
     private boolean run = true;
 
-    private TrafficLightClient(Socket socket, String ID) throws IOException {
-        LightID = ID;
-        TL = new TrafficLight(this);
+    private TrafficLightClient() {
+    }
+
+    public static void StartClient(Socket socket, String ID) throws IOException {
+        TrafficLightClient tlc = new TrafficLightClient();
+        tlc.LightID = ID;
+        tlc.TL = new TrafficLight(tlc);
         OutputStream os = socket.getOutputStream();
-        output = new ObjectOutputStream(os);
-        output.flush();
+        tlc.output = new ObjectOutputStream(os);
+        tlc.output.flush();
         InputStream is = socket.getInputStream();
-        input = new ObjectInputStream(is);
-        uiListener = new Thread(this);
-        uiListener.start();
-        comment = new Command();
-        comment.setLightID(LightID);
-        sendCommand(comment);
+        tlc.input = new ObjectInputStream(is);
+        tlc.uiListener = new Thread(tlc);
+        tlc.uiListener.start();
+        tlc.comment = new Command();
+        tlc.comment.setLightID(tlc.LightID);
+        tlc.sendCommand(tlc.comment);
     }
 
     public void writeOutput(Object command) {
@@ -57,7 +61,6 @@ public class TrafficLightClient implements Runnable {
         } finally {
             uiListener = null;
             TL.disconnect();
-
             try {
                 output.close();
             } catch (IOException ex) {
@@ -85,8 +88,7 @@ public class TrafficLightClient implements Runnable {
 
     public static void main(String[] args) throws IOException, UnknownHostException {
         try {
-            Socket socket = new Socket("LocalHost", 1560);
-            new TrafficLightClient(socket, "0001");
+            TrafficLightClient.StartClient(new Socket("LocalHost", 1560), "0001");
         } catch (ConnectException e) {
             System.out.println("Server not found at this Host:Port");
         }

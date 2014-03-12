@@ -7,41 +7,41 @@ import java.util.*;
 /**
  *
  * @author group 3
- **/
-public class LocalServer extends Thread {
+ *
+ */
+public class LocalServer{
 
     private static PrintWriter log;
-    private static boolean run = true;
     private static boolean logCreated = false;
+    private boolean run = true;
+    private NationalServerClient nsc;
     
-    public LocalServer(int port) throws IOException {
+
+    private LocalServer() {
+    }
+
+    public static void StartServer(int port) throws IOException {
+        LocalServer ls = new LocalServer();
+        ls.nsc = new NationalServerClient(ls);
+        ls.nsc.SendNationalFeedback("Hello");
+        ls.nsc.start();
+        ls.ServerRun(port);
+    }
+
+    private void ServerRun(int port) throws IOException {
         ServerSocket server = new ServerSocket(port);
         writeToLog("LocalServer Created on port " + port);
-        System.out.println("LocalServer Created on port " + port);
-        server.setSoTimeout(500);
-        
-        // Send data to Johns server
-        SendData output = new SendData();
-        output.run();
-        //Thread t1 = new Thread(output);
-        //t1.start();
-        
-        // Wait for response from Johns server
-        RecieveData input = new RecieveData();
-        Thread t2 = new Thread(input);
-        t2.start();
-
+        server.setSoTimeout(50);
         while (run) {
             Socket client = null;
             try {
                 client = server.accept();
             } catch (SocketTimeoutException e) {
             }
-            
+
             if (client != null) {
-                System.out.println("Connection to Server accepted from: " + client.getInetAddress());
-                SystemHandler handler = new SystemHandler(client);
-                writeToLog("New Client connection accepted from: " + client.getInetAddress());
+                SystemHandler handler = new SystemHandler(client, this);
+                //SystemHandler.handlers.add(handler);
                 Thread handleThread = new Thread(handler);
                 handleThread.start();
             }
@@ -58,6 +58,11 @@ public class LocalServer extends Thread {
             System.exit(0);
         }
     }
+    
+    public void processNationalServerCommand(String toProcess) {
+        writeToLog("Processed Command: " + toProcess);
+        System.out.println("RESEAVED");
+    }
 
     public static void writeToLog(String toLog) {
         if (!logCreated) {
@@ -69,17 +74,19 @@ public class LocalServer extends Thread {
         }
         Calendar dateTime = Calendar.getInstance();
         log.println(dateTime.getTime().toString() + " - " + toLog);
+        System.out.println(dateTime.getTime().toString() + " - " + toLog);
     }
 
-    public static void terminateServer() {
+    public void terminateServer() {
         run = false;
     }
 
-    public static boolean state() {
+    public boolean state() {
         return run;
     }
 
     public static void main(String[] args) throws IOException {
-        new LocalServer(1560);
+        StartServer(1560);
     }
+
 }

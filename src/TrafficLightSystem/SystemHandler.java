@@ -5,7 +5,7 @@ import java.net.*;
 import java.io.*;
 import java.util.*;
 
-public class SystemHandler implements Runnable {
+public class SystemHandler extends Thread {
 
     private static final int MAXCLIENTS = 8;
     public static ArrayList<SystemHandler> handlers = new ArrayList<SystemHandler>();
@@ -16,8 +16,9 @@ public class SystemHandler implements Runnable {
     private ObjectOutputStream output;
     private boolean run = true;
     private String clientIP;
+    private LocalServer ls;
 
-    public SystemHandler(Socket clientSocket) throws IOException {
+    public SystemHandler(Socket clientSocket, LocalServer lsLocal) throws IOException {
         socket = clientSocket;
         clientIP = socket.getInetAddress().toString();
         OutputStream os = socket.getOutputStream();
@@ -25,8 +26,10 @@ public class SystemHandler implements Runnable {
         output.flush();
         InputStream is = socket.getInputStream();
         input = new ObjectInputStream(is);
+        ls = lsLocal;
     }
 
+    @Override
     public void run() {
         try {
             command = (Command) input.readObject();
@@ -72,18 +75,19 @@ public class SystemHandler implements Runnable {
                             LocalServer.writeToLog("New Client conection refused from: " + clientIP);
                             return;
                         }
-                        // If command from someone else and if the Command is a quit command
-                    } else if (command.getQuit()) {
+                    }else 
+                    // if the Command is a quit command
+                    if (command.getQuit()) {
                         Command killCommand = new Command();
-                        killCommand.setCommand(lightID + " has left the discussion.");
+                        killCommand.setCommand("Light with ID " + lightID + " has disconnected.");
                         distribute(killCommand);
-                        
+
                         //if the Command is a server quit command
                     } else if (command.getServerQuit()) {
                         Command killServerCommand = new Command();
                         killServerCommand.setCommand("The Server has been terminated by " + lightID);
                         distribute(killServerCommand);
-                        LocalServer.terminateServer();
+                        ls.terminateServer();
                     }
                 } catch (ClassNotFoundException e) {
                 }
