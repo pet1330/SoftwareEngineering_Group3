@@ -1,3 +1,9 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package TrafficLightSystem;
 
 import java.io.BufferedReader;
@@ -8,38 +14,25 @@ import java.net.Socket;
 
 /**
  *
- * @author Group 3
+ * @author computing
  */
-public class NationalServerClient extends Thread {
-
-    private LocalServer ls;
+public class ReceiveThread extends Thread {
+   
+    Socket SendSocket;
     public PrintWriter printer;
     private BufferedReader reader;
-    private Socket socket;
+    //private Socket socket;
     private boolean run = true;
-
-    public NationalServerClient(LocalServer _ls) throws IOException {
-        ls = _ls;
-        socket = new Socket("LocalHost", 5000);
-        //socket = new Socket("192.168.0.103", 5000);
-        
-        LocalServer.writeToLog("Starting connection on port 5000");
-        try {
-            printer = new PrintWriter(this.socket.getOutputStream());
-        } catch (IOException ex) {
-        }
+    private LocalServer ls;
+    
+    public ReceiveThread(Socket RecieveSocket){
+     SendSocket = RecieveSocket;  
+    
     }
-
-    public static void SendNationalFeedback(String toSend, PrintWriter printer) {
-        printer.print(toSend);
-        printer.flush();
-        LocalServer.writeToLog("Command " + toSend + " sent");
-    }
-
-    @Override
-    public void run() {
-        try {
-            reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+    
+    public void run(){
+     try {
+            reader = new BufferedReader(new InputStreamReader(SendSocket.getInputStream()));
             //printer.println("HELP");
             //printer.flush();
             while (true) {
@@ -58,13 +51,9 @@ public class NationalServerClient extends Thread {
         } finally {
             try {
                 System.out.println("hel");
-                socket.close();
+                SendSocket.close();
             } catch (IOException ex) {
             }
         }
-    }
-
-    public void terminateServer() {
-        run = false;
     }
 }

@@ -3,6 +3,8 @@ package TrafficLightSystem;
 import java.net.*;
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -14,16 +16,28 @@ public class LocalServer{
     private static PrintWriter log;
     private static boolean logCreated = false;
     private boolean run = true;
-    private NationalServerClient nsc;
+    public NationalServerClient nsc;
     
 
     private LocalServer() {
+        Socket SendSocket;
+        try {
+        SendSocket = new Socket("Localhost", 5000);
+            
+        SendThread send = new SendThread(SendSocket);
+        ReceiveThread receieve = new ReceiveThread(SendSocket);
+       
+       receieve.run();
+       send.run();
+        } catch (IOException ex) {
+            Logger.getLogger(LocalServer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public static void StartServer(int port) throws IOException {
         LocalServer ls = new LocalServer();
         ls.nsc = new NationalServerClient(ls);
-        ls.nsc.SendNationalFeedback("Hello");
+        //ls.nsc.SendNationalFeedback("HELP");
         ls.nsc.start();
         ls.ServerRun(port);
     }
@@ -32,6 +46,8 @@ public class LocalServer{
         ServerSocket server = new ServerSocket(port);
         writeToLog("LocalServer Created on port " + port);
         server.setSoTimeout(50);
+       
+ 
         while (run) {
             Socket client = null;
             try {

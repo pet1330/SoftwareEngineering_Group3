@@ -89,7 +89,13 @@ public class SystemHandler extends Thread {
                         distribute(killServerCommand);
                         ls.terminateServer();
                     }
+                    
+//                    if(command.getCommand().startsWith("!"))
+//                    {
+//                        ls.nsc.SendNationalFeedback(command.getCommand().substring(1, command.getCommand().length()), ls.nsc.printer);
+//                    }
                 } catch (ClassNotFoundException e) {
+                   System.out.println("text");
                 }
             }
         } catch (IOException ex) {
