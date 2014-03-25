@@ -18,7 +18,6 @@ public class LocalServer{
     private boolean run = true;
     public NationalServerClient nsc;
     
-
     private LocalServer() {
         Socket SendSocket;
         try {
@@ -98,7 +97,8 @@ public class LocalServer{
     }
 
     public boolean state() {
-        return run;
+        //return run;
+        return true;
     }
 
     public static void main(String[] args) throws IOException {

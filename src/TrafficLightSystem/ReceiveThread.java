@@ -17,43 +17,42 @@ import java.net.Socket;
  * @author computing
  */
 public class ReceiveThread extends Thread {
-   
+
     Socket SendSocket;
     public PrintWriter printer;
     private BufferedReader reader;
     //private Socket socket;
     private boolean run = true;
-    private LocalServer ls;
-    
-    public ReceiveThread(Socket RecieveSocket){
-     SendSocket = RecieveSocket;  
-    
+    LocalServer ls;
+
+    public ReceiveThread(Socket RecieveSocket) {
+        SendSocket = RecieveSocket;
     }
-    
-    public void run(){
-     try {
+
+    public void run() {
+        try {
             reader = new BufferedReader(new InputStreamReader(SendSocket.getInputStream()));
+            
             //printer.println("HELP");
             //printer.flush();
+            
             while (true) {
                 while (run && ls.state()) {
                     String inputLine;
                     while ((inputLine = reader.readLine()) != null) {
-                        ls.processNationalServerCommand(inputLine);
                         System.out.println(inputLine);
+                        ls.processNationalServerCommand(inputLine);
+                         System.out.println(inputLine);
                         //printer.println("HELP");
                         //printer.flush();
                     }
                 }
             }
+
         } catch (IOException e) {
             System.out.println("he");
-        } finally {
-            try {
-                System.out.println("hel");
-                SendSocket.close();
-            } catch (IOException ex) {
-            }
+        } catch (Exception e) {
+            System.out.println("error: " + e);
         }
     }
 }
