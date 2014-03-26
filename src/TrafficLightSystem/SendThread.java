@@ -1,44 +1,48 @@
 package TrafficLightSystem;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 
 /**
  *
- * @author computing
+ * @author Group 3
  */
-public class SendThread extends Thread {
-    
-    private Socket SendSocket;
-    
-    
-    public SendThread(Socket RecieveSocket)
-    {
-        SendSocket = RecieveSocket;
+class SendThread implements Runnable {
+
+    Socket socket;
+    PrintWriter print;
+    BufferedReader input;
+    TrafficLightSystem ControlCentre;
+
+    public SendThread(Socket sock, TrafficLightSystem syst) {
+        socket = sock;
+        ControlCentre = syst;
     }
-    
-    public void run(){
-        try {       
-            OutputStream SendStream = SendSocket.getOutputStream();
-            PrintWriter SendPrint = new PrintWriter(SendStream);
-            SendPrint.print("HELP");
-            SendPrint.flush();
-            SendSocket.close(); 
-        } catch (IOException ex) {
-            Logger.getLogger(SendThread.class.getName()).log(Level.SEVERE, null, ex);
-            
+
+    @Override
+    public void run() {
+        try {
+            if (socket.isConnected()) {
+                this.print = new PrintWriter(socket.getOutputStream(), true);
+                while (ControlCentre.IsAlive()) {
+                    input = new BufferedReader(new InputStreamReader(System.in));
+                    String msgtoServerString;
+                    msgtoServerString = input.readLine();
+                    this.print.println(msgtoServerString);
+                    this.print.flush();
+
+                    if (msgtoServerString.equals("EXIT")) {
+                        ControlCentre.Terminate();
+                    } else {
+                        ControlCentre.process(msgtoServerString);
+                    }
+                }
+                socket.close();
+            }
+        } catch (IOException e) {
         }
     }
-            
-    
 }

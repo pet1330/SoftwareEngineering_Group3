@@ -22,7 +22,10 @@ public class DebugNatioalServer {
             String inputLine;
             while (true) {
                 while ((inputLine = in.readLine()) != null) {
-                    out.println(inputLine);
+                    out.println("First " + inputLine);
+                    out.println("Second " + inputLine);
+                    out.println("Third " + inputLine);
+
                     System.out.println(inputLine);
                 }
             }
