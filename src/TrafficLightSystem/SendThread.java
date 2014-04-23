@@ -10,7 +10,7 @@ import java.net.Socket;
  *
  * @author Group 3
  */
-class SendThread implements Runnable {
+class SendThread {
 
     Socket socket;
     PrintWriter print;
@@ -21,8 +21,35 @@ class SendThread implements Runnable {
         socket = sock;
         ControlCentre = syst;
     }
+    
+    // Send some data to the server
+    public void sendData(String data)
+    {
+        try {
+            // Check to see if the socket is connected still
+            if (socket.isConnected()) 
+            {
+                // Create a new PrintWriter object
+                this.print = new PrintWriter(socket.getOutputStream(), true);
+                
+                // Read in the data we want to send to the server
+                this.print.println(data);
+                
+                // Flush the pipes (send everything off)
+                this.print.flush();
+                
+                // Output a success message
+                System.out.println("The following data was sent successfully: " + data);
+            }
+        } 
+        catch (IOException e) 
+        {
+            // There was an error so alert the user
+            System.out.println("Error sending the following data: " + data);
+        }
+    }
 
-    @Override
+    /*@Override
     public void run() {
         try {
             if (socket.isConnected()) {
@@ -44,5 +71,5 @@ class SendThread implements Runnable {
             }
         } catch (IOException e) {
         }
-    }
+    }*/
 }

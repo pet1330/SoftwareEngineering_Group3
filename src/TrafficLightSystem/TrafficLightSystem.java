@@ -21,13 +21,27 @@ public class TrafficLightSystem {
         try {
             TrafficLightSystem tls = new TrafficLightSystem();
             //Socket sock = new Socket("192.168.0.103", 5000);
+            // Create a new socket
             Socket sock = new Socket("localhost", 5000);
-            tls.sendThread = new SendThread(sock, tls);
-            tls.thread = new Thread(tls.sendThread);
-            tls.thread.start();
+            
+            // Start listening for data coming in
             tls.recieveThread = new ReceivedThread(sock, tls);
             tls.thread2 = new Thread(tls.recieveThread);
             tls.thread2.start();
+            
+            // Create an object to send data out
+            SendThread sendData = new SendThread(sock, tls);
+            
+            // Send some data to the server
+            sendData.sendData("Hello there");
+            
+            sendData.sendData("Hello there again");
+            
+            /*tls.sendThread = new SendThread(sock, tls);
+            tls.thread = new Thread(tls.sendThread);
+            tls.thread.start();*/
+            
+            
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }

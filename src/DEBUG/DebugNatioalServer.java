@@ -22,10 +22,12 @@ public class DebugNatioalServer {
             String inputLine;
             while (true) {
                 while ((inputLine = in.readLine()) != null) {
-                    out.println("First " + inputLine);
+                    /*out.println("First " + inputLine);
                     out.println("Second " + inputLine);
-                    out.println("Third " + inputLine);
+                    out.println("Third " + inputLine);*/
 
+                    out.println("The server confirmed receiving: " + inputLine);
+                    
                     System.out.println(inputLine);
                 }
             }
