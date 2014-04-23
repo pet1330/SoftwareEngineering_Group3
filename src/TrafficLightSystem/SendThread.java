@@ -1,8 +1,6 @@
 package TrafficLightSystem;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
@@ -13,8 +11,6 @@ import java.net.Socket;
 class SendThread {
 
     Socket socket;
-    PrintWriter print;
-    BufferedReader input;
     TrafficLightSystem ControlCentre;
 
     public SendThread(Socket sock, TrafficLightSystem syst) {
@@ -30,13 +26,13 @@ class SendThread {
             if (socket.isConnected()) 
             {
                 // Create a new PrintWriter object
-                this.print = new PrintWriter(socket.getOutputStream(), true);
+                PrintWriter print = new PrintWriter(socket.getOutputStream(), true);
                 
                 // Read in the data we want to send to the server
-                this.print.println(data);
+                print.println(data);
                 
                 // Flush the pipes (send everything off)
-                this.print.flush();
+                print.flush();
                 
                 // Output a success message
                 System.out.println("The following data was sent successfully: " + data);
