@@ -87,12 +87,13 @@ public class TrafficLightSystem {
     }
     
     public void reportTrafficLightStatus()
-    {
+    {         
+        clearScreen();
         System.out.println("Current vehicle statistics:");
         System.out.println("Traffic light 1: " + Light1.size());
         System.out.println("Traffic light 2: " + Light2.size());
         System.out.println("Traffic light 3: " + Light3.size());
-        System.out.println("Traffic light 4: " + Light4.size());
+        System.out.println("Traffic light 4: " + Light4.size() + "\n");
     }
 
     public void process(String toProcess) {
@@ -108,5 +109,13 @@ public class TrafficLightSystem {
 
     public static void main(String[] args) {
         StartSystem();
+    }
+    
+    public void clearScreen()
+    {
+        /*for(int i = 0; i < 100; i++)
+        {
+            System.out.println("\n");
+        }*/
     }
 }

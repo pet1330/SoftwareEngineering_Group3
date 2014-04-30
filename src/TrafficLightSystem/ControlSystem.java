@@ -102,61 +102,24 @@ public class ControlSystem extends Thread {
             if (!tls.Light3.isEmpty()) {
                 tls.Light3.remove(0);
 
-            } else {
+            }
+        }
+        else
+        {
+            if (!tls.Light2.isEmpty()) {
+                tls.Light2.remove(0);
+            }
+
+            if (!tls.Light4.isEmpty()) {
+                tls.Light4.remove(0);
 
             }
         }
-//
-//            syst.lightSystem[0].setLight(TrafficLight.Orange);
-//            syst.lightSystem[1].setLight(TrafficLight.Red);
-//            syst.lightSystem[2].setLight(TrafficLight.Red);
-//            syst.lightSystem[3].setLight(TrafficLight.Orange);
-//            syst.PrintMap();
-//            syst.waitfor(2);
-//            syst.lightSystem[0].setLight(TrafficLight.Green);
-//            syst.lightSystem[1].setLight(TrafficLight.Red);
-//            syst.lightSystem[2].setLight(TrafficLight.Red);
-//            syst.lightSystem[3].setLight(TrafficLight.Green);
-//            syst.PrintMap();
-//            syst.waitfor(5);
-//            syst.lightSystem[0].setLight(TrafficLight.Orange);
-//            syst.lightSystem[1].setLight(TrafficLight.Red);
-//            syst.lightSystem[2].setLight(TrafficLight.Red);
-//            syst.lightSystem[3].setLight(TrafficLight.Orange);
-//            syst.PrintMap();
-//            syst.waitfor(2);
-//            syst.setAllLightsRed();
-//            syst.PrintMap();
-//            syst.waitfor(2);
-//            break;
-//        case 1:
-//                         syst.lightSystem[0].setLight(TrafficLight.Red);
-//                         syst.lightSystem[1].setLight(TrafficLight.Orange);
-//                         syst.lightSystem[2].setLight(TrafficLight.Orange);
-//                         syst.lightSystem[3].setLight(TrafficLight.Red);
-//                         syst.PrintMap();
-//                         syst.waitfor(2);
-//                         syst.lightSystem[0].setLight(TrafficLight.Red);
-//                         syst.lightSystem[1].setLight(TrafficLight.Green);
-//                         syst.lightSystem[2].setLight(TrafficLight.Green);
-//                         syst.lightSystem[3].setLight(TrafficLight.Red);
-//                         syst.PrintMap();
-//                         syst.waitfor(5);
-//                         syst.lightSystem[0].setLight(TrafficLight.Red);
-//                         syst.lightSystem[1].setLight(TrafficLight.Orange);
-//                         syst.lightSystem[2].setLight(TrafficLight.Orange);
-//                         syst.lightSystem[3].setLight(TrafficLight.Red);
-//                         syst.PrintMap();
-//                         syst.waitfor(2);
-//                         syst.setAllLightsRed();
-//                         syst.PrintMap();
-//                         syst.waitfor(2);
-//                         break;
     }
 
     private void PrintMap() {
 
-        System.out.println("     |   |   |      ");
+        /*System.out.println("     |   |   |      ");
         System.out.println("     |       |      ");
         System.out.println("     |   |   |      ");
         System.out.println("     |      " + lightColours[0] + "|      ");
@@ -172,7 +135,7 @@ public class ControlSystem extends Thread {
         System.out.println("     |   |   |      ");
         System.out.println("     |       |      ");
         System.out.println("     |   |   |      ");
-        System.out.println("\n\n --------------------------------------------------- \n\n");
+        System.out.println("\n\n --------------------------------------------------- \n\n");*/
     }
 
     private void waitFor(int seconds) {
