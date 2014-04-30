@@ -13,9 +13,9 @@ public class TrafficLightSystem {
     SendThread sendThread;
     ReceivedThread recieveThread;
     ControlSystem controlSystem;
+    UserInput uInput;
     Thread controlThread;
-    Thread thread;
-    Thread thread2;
+    Thread thread, thread2;
     public boolean run = true;
     int[] trafficNumber = {0, 0, 0, 0};
     ArrayList<TrafficData> Light1 = new ArrayList<>();
@@ -35,6 +35,11 @@ public class TrafficLightSystem {
             tls.recieveThread = new ReceivedThread(sock, tls);
             tls.thread2 = new Thread(tls.recieveThread);
             tls.thread2.start();
+            
+            // Start listening for user input
+            tls.uInput = new UserInput(tls);
+            tls.thread = new Thread(tls.uInput);
+            tls.thread.start();
 
             // Create an object to send data out
             SendThread sendData = new SendThread(sock, tls);
@@ -65,7 +70,6 @@ public class TrafficLightSystem {
     }
 
     public void addToList(String start, String end) {
-
         switch (start) {
             case "1":
                 Light1.add(new TrafficData(start, end));
@@ -80,6 +84,15 @@ public class TrafficLightSystem {
                 Light4.add(new TrafficData(start, end));
                 break;
         }
+    }
+    
+    public void reportTrafficLightStatus()
+    {
+        System.out.println("Current vehicle statistics:");
+        System.out.println("Traffic light 1: " + Light1.size());
+        System.out.println("Traffic light 2: " + Light2.size());
+        System.out.println("Traffic light 3: " + Light3.size());
+        System.out.println("Traffic light 4: " + Light4.size());
     }
 
     public void process(String toProcess) {
