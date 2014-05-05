@@ -30,7 +30,6 @@ class ReceivedThread implements Runnable {
 
                 // Display the message received
                 //System.out.println("Received : " + msgRecieved);
-
                 // Remove the ; from the end of the string
                 if (msgRecieved.endsWith(";")) {
                     msgRecieved = msgRecieved.substring(0, msgRecieved.length() - 1);
@@ -46,8 +45,9 @@ class ReceivedThread implements Runnable {
 
                     start = st.nextToken();
                     end = st.nextToken();
-                    ControlCentre.addToList(start, end);
-                    ControlCentre.reportTrafficLightStatus();
+                    if (start.length() == 1 && end.length() == 1) {
+                        ControlCentre.addToList(start, end);
+                    }
                 }
 
                 if (!ControlCentre.IsAlive()) {

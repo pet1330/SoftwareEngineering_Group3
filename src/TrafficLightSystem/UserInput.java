@@ -1,9 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package TrafficLightSystem;
 
 import java.io.BufferedReader;
@@ -12,30 +6,26 @@ import java.io.InputStreamReader;
 
 /**
  *
- * @author computing
+ * @author Group 3
  */
 public class UserInput implements Runnable {
-    
+
     BufferedReader input;
     TrafficLightSystem ControlCentre;
-    
-    public UserInput(TrafficLightSystem ls)
-    {
+
+    public UserInput(TrafficLightSystem ls) {
         ControlCentre = ls;
     }
 
     @Override
     public void run() {
         input = new BufferedReader(new InputStreamReader(System.in));
-        String userMessage = "";
-        
-        while(true)
-        {
+
+        while (true) {
             try {
-                userMessage = input.readLine();
-                
-                if(!userMessage.equals(""))
-                {
+                String userMessage = input.readLine();
+
+                if (!userMessage.equals("")) {
                     userFunctions(userMessage);
                 }
             } catch (IOException ex) {
@@ -43,9 +33,9 @@ public class UserInput implements Runnable {
             }
         }
     }
-    
+
     public void userFunctions(String message) {
-        switch (message) {
+        switch (message.toLowerCase().trim()) {
             case ("exit"):
                 ControlCentre.Terminate();
                 break;
