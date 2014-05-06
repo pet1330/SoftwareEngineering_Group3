@@ -15,6 +15,11 @@ import javax.swing.JPanel;
  */
 public class Window extends JPanel implements KeyListener {
 
+    public static final int RED = 0;
+    public static final int REDAMBER = 1;
+    public static final int AMBER = 2;
+    public static final int GREEN = 3;
+
     public Image imgTiles;
     public Image imgSprite[];
     public static int mapWidth = 14;
@@ -25,6 +30,7 @@ public class Window extends JPanel implements KeyListener {
     public static int yPos = 160;
     public static int speed = 10;
     public static TrafficData carPos[] = new TrafficData[4];
+    public static int[] lightColour = new int[4];
 
     public Window() {
         carPos[0] = new TrafficData(0, 1);
@@ -44,6 +50,7 @@ public class Window extends JPanel implements KeyListener {
         super.paintComponent(g);
         paintMap(g);
         paintRoadMarkings(g);
+        paintTrafficLights(g);
         printCars(g);
     }
 
@@ -59,7 +66,142 @@ public class Window extends JPanel implements KeyListener {
     }
 
     private void paintTrafficLights(Graphics g) {
-        // TODO LOGIC CODE
+
+        int i = 5;
+        int j = 4;
+        int x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        int y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.red);
+        if (lightColour[0] == RED || lightColour[0] == REDAMBER) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        i = 5;
+        j = 3;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.yellow);
+        if (lightColour[0] == AMBER || lightColour[0] == REDAMBER) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        i = 5;
+        j = 2;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.green);
+        if (lightColour[0] == GREEN) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+//==============================================================================
+        i = 10;
+        j = 11;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.red);
+        if (lightColour[2] == RED || lightColour[2] == REDAMBER) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        i = 10;
+        j = 12;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.yellow);
+        if (lightColour[2] == AMBER || lightColour[2] == REDAMBER) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        i = 10;
+        j = 13;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.green);
+        if (lightColour[2] == GREEN) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        //======================================================================
+        i = 11;
+        j = 5;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.red);
+        if (lightColour[3] == RED || lightColour[3] == REDAMBER) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        i = 12;
+        j = 5;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.yellow);
+        if (lightColour[3] == AMBER || lightColour[3] == REDAMBER) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        i = 13;
+        j = 5;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.green);
+        if (lightColour[3] == GREEN) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        //======================================================================
+        i = 4;
+        j = 10;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.red);
+        if (lightColour[1] == RED || lightColour[1] == REDAMBER) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        i = 3;
+        j = 10;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.yellow);
+        if (lightColour[1] == AMBER || lightColour[1] == REDAMBER) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        i = 2;
+        j = 10;
+        x = ((j * tileWidth / 2) + (i * tileWidth / 2)) + xPos - 8;
+        y = ((i * tileHeight / 2) - (j * tileHeight / 2)) + yPos - 8;
+        g.setColor(Color.green);
+        if (lightColour[1] == GREEN) {
+            g.fillOval(x, y, 16, 16);
+        } else {
+            g.drawOval(x, y, 16, 16);
+        }
+
+        repaint();
     }
 
     private void paintMap(Graphics g) {

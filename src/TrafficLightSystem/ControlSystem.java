@@ -27,42 +27,41 @@ public class ControlSystem extends Thread {
             processSequence(step);
 
             // Change the light processSequence
-            changeLights(step);
-            step = !step;
+            changeLights(!(step = !step));
         }
     }
 
     public void changeLights(boolean sequence) {
         if (sequence) {
             // Starting on red
-            lightColours[0] = REDAMBER;
-            lightColours[1] = AMBER;
-            lightColours[2] = REDAMBER;
-            lightColours[3] = AMBER;
+            Window.lightColour[0] = REDAMBER;
+            Window.lightColour[1] = AMBER;
+            Window.lightColour[2] = REDAMBER;
+            Window.lightColour[3] = AMBER;
             waitFor(2);
-            lightColours[0] = GREEN;
-            lightColours[1] = RED;
-            lightColours[2] = GREEN;
-            lightColours[3] = RED;
+            Window.lightColour[0] = GREEN;
+            Window.lightColour[1] = RED;
+            Window.lightColour[2] = GREEN;
+            Window.lightColour[3] = RED;
         } else {
             //starting on green
             waitFor(2);
-            lightColours[0] = AMBER;
-            lightColours[1] = REDAMBER;
-            lightColours[2] = AMBER;
-            lightColours[3] = REDAMBER;
+            Window.lightColour[0] = AMBER;
+            Window.lightColour[1] = REDAMBER;
+            Window.lightColour[2] = AMBER;
+            Window.lightColour[3] = REDAMBER;
             waitFor(2);
-            lightColours[0] = RED;
-            lightColours[1] = GREEN;
-            lightColours[2] = RED;
-            lightColours[3] = GREEN;
+            Window.lightColour[0] = RED;
+            Window.lightColour[1] = GREEN;
+            Window.lightColour[2] = RED;
+            Window.lightColour[3] = GREEN;
             waitFor(2);
         }
     }
 
     private void processSequence(boolean step) {
 
-        if (step) {
+        if (!step) {
             //sequence N and S
 
             if (!tls.Light1.isEmpty()) {
