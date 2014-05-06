@@ -27,13 +27,15 @@ public class ControlSystem extends Thread {
             processSequence(step);
 
             // Change the light processSequence
-            changeLights(!(step = !step));
+            changeLights(step);
+            step = !step;
         }
     }
 
     public void changeLights(boolean sequence) {
         if (sequence) {
             // Starting on red
+            waitFor(2);
             Window.lightColour[0] = REDAMBER;
             Window.lightColour[1] = AMBER;
             Window.lightColour[2] = REDAMBER;
@@ -55,7 +57,6 @@ public class ControlSystem extends Thread {
             Window.lightColour[1] = GREEN;
             Window.lightColour[2] = RED;
             Window.lightColour[3] = GREEN;
-            waitFor(2);
         }
     }
 
@@ -84,32 +85,6 @@ public class ControlSystem extends Thread {
                 tls.Light4.remove(0);
             }
         }
-        System.out.println("Current vehicle statistics:");
-        System.out.println("Traffic light 1: " + tls.Light1.size());
-        System.out.println("Traffic light 2: " + tls.Light2.size());
-        System.out.println("Traffic light 3: " + tls.Light3.size());
-        System.out.println("Traffic light 4: " + tls.Light4.size() + "\n");
-    }
-
-    private void PrintMap() {
-
-        /*System.out.println("     |   |   |      ");
-         System.out.println("     |       |      ");
-         System.out.println("     |   |   |      ");
-         System.out.println("     |      " + lightColours[0] + "|      ");
-         System.out.println("------   |   -------");
-         System.out.println("     " + lightColours[1] + "              ");
-         System.out.println("                    ");
-         System.out.println("- - -        - - - -");
-         System.out.println("                    ");
-         System.out.println("             " + lightColours[2] + "      ");
-         System.out.println("------       -------");
-         System.out.println("     |" + lightColours[3] + "  |   |      ");
-         System.out.println("     |       |      ");
-         System.out.println("     |   |   |      ");
-         System.out.println("     |       |      ");
-         System.out.println("     |   |   |      ");
-         System.out.println("\n\n --------------------------------------------------- \n\n");*/
     }
 
     private void waitFor(int seconds) {

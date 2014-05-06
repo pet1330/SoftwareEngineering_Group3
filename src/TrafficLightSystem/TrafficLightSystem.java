@@ -1,10 +1,13 @@
 package TrafficLightSystem;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.IOException;
 import java.net.*;
 import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
@@ -63,9 +66,36 @@ public class TrafficLightSystem {
                 public void run() {
                     JPanel ControlPanel = new JPanel();
 
-                    ControlPanel.add(new JButton("Hold Lights 1 & 3"));
-                    ControlPanel.add(new JButton("Hold Lights 2 & 4"));
-                    ControlPanel.add(new JButton("Show Stats"));
+                    JButton holdWE = new JButton("Hold Lights 1 & 3");
+                    holdWE.addActionListener(new ActionListener() {
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            System.out.println("Hold Lights 1 & 3");
+                        }
+                    });
+
+                    JButton holdNS = new JButton("Hold Lights 2 & 4");
+                    holdNS.addActionListener(new ActionListener() {
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            System.out.println("Hold Lights 2 & 4");
+                        }
+                    });
+
+                    JButton stats = new JButton("Stats");
+                    stats.addActionListener(new ActionListener() {
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            System.out.println("Reporting Stats");
+                        }
+                    });
+
+                    ControlPanel.add(holdWE);
+                    ControlPanel.add(holdNS);
+                    ControlPanel.add(stats);
 
                     Map = new Window();
                     JFrame aFrame = new JFrame();

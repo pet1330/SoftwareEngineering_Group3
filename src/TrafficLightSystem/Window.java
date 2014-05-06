@@ -6,6 +6,8 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
@@ -37,8 +39,9 @@ public class Window extends JPanel implements KeyListener {
         carPos[1] = new TrafficData(1, 2);
         carPos[2] = new TrafficData(2, 3);
         carPos[3] = new TrafficData(3, 0);
-
-        imgTiles = Toolkit.getDefaultToolkit().getImage("C:\\Users\\User\\Documents\\GitHub\\SoftwareEngineering_Group3\\src\\TrafficLightSystem\\T.png");
+        Path current = Paths.get("");
+        String s = current.toAbsolutePath().toString();
+        imgTiles = Toolkit.getDefaultToolkit().getImage(s + "\\src\\TrafficLightSystem\\T.png");
         imgSprite = getSpriteImg();
         this.addKeyListener(this);
         this.setFocusable(true);
@@ -268,7 +271,9 @@ public class Window extends JPanel implements KeyListener {
     private Image[] getSpriteImg() {
         Image[] local = new Image[4];
         try {
-            BufferedImage a = ImageIO.read(new File("C:\\Users\\User\\Documents\\GitHub\\SoftwareEngineering_Group3\\src\\TrafficLightSystem\\cars.png"));
+            Path current = Paths.get("");
+            String s = current.toAbsolutePath().toString();
+            BufferedImage a = ImageIO.read(new File(s + "\\src\\TrafficLightSystem\\cars.png"));
             local[0] = a.getSubimage(150, 0, 50, 30);
             local[1] = a.getSubimage(0, 0, 50, 30);
             local[2] = a.getSubimage(50, 0, 50, 30);
