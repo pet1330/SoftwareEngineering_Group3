@@ -41,7 +41,7 @@ public class UserInput implements Runnable {
                 break;
 
             case ("report"):
-                ControlCentre.reportTrafficLightStatus();
+                ControlCentre.reportTrafficLightStatus(false);
                 break;
         }
     }

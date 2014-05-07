@@ -39,6 +39,12 @@ public class Window extends JPanel implements KeyListener {
         carPos[1] = new TrafficData(1, 2);
         carPos[2] = new TrafficData(2, 3);
         carPos[3] = new TrafficData(3, 0);
+        lightColour[0] = RED;
+        lightColour[1] = GREEN;
+        lightColour[2] = RED;
+        lightColour[3] = GREEN;
+        
+        
         Path current = Paths.get("");
         String s = current.toAbsolutePath().toString();
         imgTiles = Toolkit.getDefaultToolkit().getImage(s + "\\src\\TrafficLightSystem\\T.png");

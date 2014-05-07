@@ -31,6 +31,7 @@ public class TrafficLightSystem {
     ArrayList<TrafficData> Light4 = new ArrayList<>();
     public static Window Map;
     public static boolean buttonPushed = false;
+    static SendThread sendData;
 
     public static void StartSystem() {
         try {
@@ -50,7 +51,7 @@ public class TrafficLightSystem {
             tls.thread.start();
 
             // Create an object to send data out
-            SendThread sendData = new SendThread(sock, tls);
+            sendData = new SendThread(sock, tls);
 
             // Send some data to the server
             sendData.sendData("REGI");
@@ -161,17 +162,32 @@ public class TrafficLightSystem {
         }
     }
 
-    public void reportTrafficLightStatus() {
-        System.out.println("Current vehicle statistics:");
-        System.out.println("Traffic light 1: " + Light1.size());
-        System.out.println("Traffic light 2: " + Light2.size());
-        System.out.println("Traffic light 3: " + Light3.size());
-        System.out.println("Traffic light 4: " + Light4.size() + "\n");
+    public void reportTrafficLightStatus(Boolean sendToServer) {
+        if(sendToServer == true)
+        {
+            String report = "";
+            
+            report += "Traffic light 1: " + Light1.size() + ":";
+            report += "Traffic light 2: " + Light2.size() + ":";
+            report += "Traffic light 3: " + Light3.size() + ":";
+            report += "Traffic light 4: " + Light4.size() + ";";
+            
+            sendData.sendData(report);
+        }
+        else
+        {
+            System.out.println("Current vehicle statistics:");
+            System.out.println("Traffic light 1: " + Light1.size());
+            System.out.println("Traffic light 2: " + Light2.size());
+            System.out.println("Traffic light 3: " + Light3.size());
+            System.out.println("Traffic light 4: " + Light4.size() + "\n");
+        }
     }
 
     public void process(String toProcess) {
-        if (toProcess.equals("John's string for requesting the number of cars at each of the directions + ;")) {
+        if (toProcess.toLowerCase().trim().equals("getstate;")) {
             // TODO LOGIC CODE HERE
+            reportTrafficLightStatus(true);
         } else {
             String[] split = toProcess.split(":");
 
