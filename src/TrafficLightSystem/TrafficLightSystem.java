@@ -30,10 +30,11 @@ public class TrafficLightSystem {
     ArrayList<TrafficData> Light3 = new ArrayList<>();
     ArrayList<TrafficData> Light4 = new ArrayList<>();
     public static Window Map;
+    public static boolean buttonPushed = false;
 
     public static void StartSystem() {
         try {
-            TrafficLightSystem tls = new TrafficLightSystem();
+            final TrafficLightSystem tls = new TrafficLightSystem();
 
             // Create a new socket
             Socket sock = new Socket("localhost", 5000);
@@ -89,13 +90,28 @@ public class TrafficLightSystem {
 
                         @Override
                         public void actionPerformed(ActionEvent e) {
-                            System.out.println("Reporting Stats");
+                            JOptionPane.showMessageDialog(null,
+                                    "Traffic light 1: " + tls.Light1.size() + "\n"
+                                    + "Traffic light 2: " + tls.Light2.size() + "\n"
+                                    + "Traffic light 3: " + tls.Light3.size() + "\n"
+                                    + "Traffic light 4: " + tls.Light4.size() + "\n"
+                            );
+                        }
+                    });
+
+                    final JButton button = new JButton("Button");
+                    button.addActionListener(new ActionListener() {
+
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            buttonPushed = true;
                         }
                     });
 
                     ControlPanel.add(holdWE);
                     ControlPanel.add(holdNS);
                     ControlPanel.add(stats);
+                    ControlPanel.add(button);
 
                     Map = new Window();
                     JFrame aFrame = new JFrame();
