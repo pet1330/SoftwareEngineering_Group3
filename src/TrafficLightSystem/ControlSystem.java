@@ -47,26 +47,30 @@ public class ControlSystem extends Thread {
         if (step) {
             // Starting on red
             waitFor(2);
-            Window.lightColour[0] = REDAMBER;
             Window.lightColour[1] = AMBER;
-            Window.lightColour[2] = REDAMBER;
             Window.lightColour[3] = AMBER;
             waitFor(1);
-            Window.lightColour[0] = GREEN;
             Window.lightColour[1] = RED;
-            Window.lightColour[2] = GREEN;
             Window.lightColour[3] = RED;
+            waitFor(1);
+            Window.lightColour[0] = REDAMBER;
+            Window.lightColour[2] = REDAMBER;
+            waitFor(1);
+            Window.lightColour[0] = GREEN;
+            Window.lightColour[2] = GREEN;
         } else {
             //starting on green
             waitFor(2);
             Window.lightColour[0] = AMBER;
-            Window.lightColour[1] = REDAMBER;
             Window.lightColour[2] = AMBER;
-            Window.lightColour[3] = REDAMBER;
             waitFor(1);
             Window.lightColour[0] = RED;
-            Window.lightColour[1] = GREEN;
             Window.lightColour[2] = RED;
+            waitFor(1);
+            Window.lightColour[1] = REDAMBER;
+            Window.lightColour[3] = REDAMBER;
+            waitFor(1);
+            Window.lightColour[1] = GREEN;
             Window.lightColour[3] = GREEN;
         }
     }
