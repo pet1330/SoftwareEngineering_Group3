@@ -36,8 +36,7 @@ class SendThread {
                 System.out.println("The following data was sent successfully: " + data);
             }
         } catch (IOException e) {
-            // There was an error so alert the user
-            System.out.println("Error sending the following data: " + data);
+            System.err.println(e.getMessage());
         }
     }
 }

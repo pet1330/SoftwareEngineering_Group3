@@ -2,6 +2,9 @@ package DEBUG;
 
 import java.net.*;
 import java.io.*;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class DebugNatioalServer {
 
@@ -18,24 +21,26 @@ public class DebugNatioalServer {
             System.out.println("Client " + clientSocket.getInetAddress() + " Accepted");
             out = new PrintWriter(clientSocket.getOutputStream(), true);
             in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+            Random r = new Random();
 
-            String inputLine;
             while (true) {
-                while ((inputLine = in.readLine()) != null) {
-                    /*out.println("First " + inputLine);
-                    out.println("Second " + inputLine);
-                    out.println("Third " + inputLine);*/
-
-                    out.println("The server confirmed receiving: " + inputLine);
-                    
-                    System.out.println(inputLine);
+                int a = r.nextInt(5);
+                int b = r.nextInt(5);
+                if (a == b) {
+                    continue;
                 }
+
+                Thread.sleep(600);
+
+                out.println(a + ":" + b + ";");
             }
         } catch (IOException e) {
             clientSocket = null;
             serverSocket = null;
             out = null;
             in = null;
+        } catch (InterruptedException ex) {
+            Logger.getLogger(DebugNatioalServer.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

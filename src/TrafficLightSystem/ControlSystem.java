@@ -13,6 +13,9 @@ public class ControlSystem extends Thread {
 
     TrafficLightSystem tls;
     boolean step = true;
+    public boolean buttonPushed = false;
+    public boolean holdEW = false;
+    public boolean holdNS = false;
 
     public ControlSystem(TrafficLightSystem _tls) {
 
@@ -23,23 +26,28 @@ public class ControlSystem extends Thread {
     public void run() {
         while (true) {
             int beenProcessed = 0;
-            
-            
-            
-            do{
+
+            while (((processSequence() > 0) || (beenProcessed < 5)) && (beenProcessed < 10)) // Process current queues
+            {
+
                 beenProcessed++;
                 waitFor(1);
-            }while (((processSequence() > 0) || (beenProcessed < 5)) && (beenProcessed < 10)); // Process current queues
-            
-
-            if (tls.buttonPushed) {
-                buttonPushed();
-                tls.buttonPushed = false;
             }
 
-            // Change the light processSequence
-            changeLights();
-            step = !step;
+            if (buttonPushed) {
+                buttonPushed();
+                buttonPushed = false;
+            }
+
+            if (holdEW && step) {
+                holdEW = false;
+            } else if (holdNS && step) {
+                holdNS = false;
+            } else {
+                // Change the light processSequence
+                changeLights();
+                step = !step;
+            }
         }
     }
 
@@ -47,104 +55,107 @@ public class ControlSystem extends Thread {
         if (step) {
             // Starting on red
             waitFor(2);
-            Window.lightColour[1] = AMBER;
-            Window.lightColour[3] = AMBER;
+            tls.Map.lightColour[1] = AMBER;
+            tls.Map.lightColour[3] = AMBER;
             waitFor(1);
-            Window.lightColour[1] = RED;
-            Window.lightColour[3] = RED;
+            tls.Map.lightColour[1] = RED;
+            tls.Map.lightColour[3] = RED;
+            waitFor(0.5);
+            tls.Map.lightColour[0] = REDAMBER;
+            tls.Map.lightColour[2] = REDAMBER;
             waitFor(1);
-            Window.lightColour[0] = REDAMBER;
-            Window.lightColour[2] = REDAMBER;
-            waitFor(1);
-            Window.lightColour[0] = GREEN;
-            Window.lightColour[2] = GREEN;
+            tls.Map.lightColour[0] = GREEN;
+            tls.Map.lightColour[2] = GREEN;
         } else {
             //starting on green
             waitFor(2);
-            Window.lightColour[0] = AMBER;
-            Window.lightColour[2] = AMBER;
+            tls.Map.lightColour[0] = AMBER;
+            tls.Map.lightColour[2] = AMBER;
             waitFor(1);
-            Window.lightColour[0] = RED;
-            Window.lightColour[2] = RED;
+            tls.Map.lightColour[0] = RED;
+            tls.Map.lightColour[2] = RED;
+            waitFor(0.5);
+            tls.Map.lightColour[1] = REDAMBER;
+            tls.Map.lightColour[3] = REDAMBER;
             waitFor(1);
-            Window.lightColour[1] = REDAMBER;
-            Window.lightColour[3] = REDAMBER;
-            waitFor(1);
-            Window.lightColour[1] = GREEN;
-            Window.lightColour[3] = GREEN;
+            tls.Map.lightColour[1] = GREEN;
+            tls.Map.lightColour[3] = GREEN;
         }
     }
 
-    public void buttonPushed() {
+    private void buttonPushed() {
         if (step) {
             // Starting on red
             waitFor(2);
-            Window.lightColour[1] = AMBER;
-            Window.lightColour[3] = AMBER;
+            tls.Map.lightColour[1] = AMBER;
+            tls.Map.lightColour[3] = AMBER;
             waitFor(1);
-            Window.lightColour[1] = RED;
-            Window.lightColour[3] = RED;
+            tls.Map.lightColour[1] = RED;
+            tls.Map.lightColour[3] = RED;
         } else {
             //starting on green
             waitFor(2);
-            Window.lightColour[0] = AMBER;
-            Window.lightColour[2] = AMBER;
+            tls.Map.lightColour[0] = AMBER;
+            tls.Map.lightColour[2] = AMBER;
 
             waitFor(1);
-            Window.lightColour[0] = RED;
-            Window.lightColour[2] = RED;
+            tls.Map.lightColour[0] = RED;
+            tls.Map.lightColour[2] = RED;
 
         }
         waitFor(5);
         if (step) {
-            Window.lightColour[0] = REDAMBER;
-            Window.lightColour[2] = REDAMBER;
+            tls.Map.lightColour[0] = REDAMBER;
+            tls.Map.lightColour[2] = REDAMBER;
             waitFor(1);
-            Window.lightColour[0] = GREEN;
-            Window.lightColour[2] = GREEN;
+            tls.Map.lightColour[0] = GREEN;
+            tls.Map.lightColour[2] = GREEN;
         } else {
-            Window.lightColour[1] = REDAMBER;
-            Window.lightColour[3] = REDAMBER;
+            tls.Map.lightColour[1] = REDAMBER;
+            tls.Map.lightColour[3] = REDAMBER;
             waitFor(1);
-            Window.lightColour[1] = GREEN;
-            Window.lightColour[3] = GREEN;
+            tls.Map.lightColour[1] = GREEN;
+            tls.Map.lightColour[3] = GREEN;
         }
 
     }
 
     private int processSequence() {
         int processed = 0;
+        TrafficData remove;
         if (!step) {
             //sequence N and S
 
-            if (!tls.Light1.isEmpty()) {
-                TrafficLightSystem.Map.animateCars(tls.Light1.get(0).getStart(), tls.Light1.get(0).getEnd());
-                tls.Light1.remove(0);
+            remove = tls.Light1.poll();
+            if (remove != null) {
+                tls.Map.animateCars(remove.getStart(), remove.getEnd());
                 processed++;
             }
 
-            if (!tls.Light3.isEmpty()) {
-                TrafficLightSystem.Map.animateCars(tls.Light3.get(0).getStart(), tls.Light3.get(0).getEnd());
-                tls.Light3.remove(0);
+            remove = tls.Light3.poll();
+            if (remove != null) {
+                tls.Map.animateCars(remove.getStart(), remove.getEnd());
                 processed++;
             }
+
         } else {
-            if (!tls.Light2.isEmpty()) {
-                TrafficLightSystem.Map.animateCars(tls.Light2.get(0).getStart(), tls.Light2.get(0).getEnd());
-                tls.Light2.remove(0);
+            remove = tls.Light2.poll();
+            if (remove != null) {
+
+                tls.Map.animateCars(remove.getStart(), remove.getEnd());
                 processed++;
             }
 
-            if (!tls.Light4.isEmpty()) {
-                TrafficLightSystem.Map.animateCars(tls.Light4.get(0).getStart(), tls.Light4.get(0).getEnd());
-                tls.Light4.remove(0);
+            remove = tls.Light4.poll();
+            if (remove != null) {
+                tls.Map.animateCars(remove.getStart(), remove.getEnd());
                 processed++;
             }
         }
         return processed;
     }
 
-    private void waitFor(int seconds) {
+    private void waitFor(double seconds) {
         long startTime = System.currentTimeMillis();
         while ((System.currentTimeMillis() - startTime) < (1000 * seconds)) {
             //just keep looping...
