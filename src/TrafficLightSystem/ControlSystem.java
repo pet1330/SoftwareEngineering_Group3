@@ -14,8 +14,7 @@ public class ControlSystem extends Thread {
     TrafficLightSystem tls;
     boolean step = true;
     public boolean buttonPushed = false;
-    public boolean holdEW = false;
-    public boolean holdNS = false;
+    public boolean hold = false;
 
     public ControlSystem(TrafficLightSystem _tls) {
 
@@ -34,16 +33,7 @@ public class ControlSystem extends Thread {
                 waitFor(1);
             }
 
-            if (buttonPushed) {
-                buttonPushed();
-                buttonPushed = false;
-            }
-
-            if (holdEW && step) {
-                holdEW = false;
-            } else if (holdNS && step) {
-                holdNS = false;
-            } else {
+            if (!hold) {
                 // Change the light processSequence
                 changeLights();
                 step = !step;
@@ -60,7 +50,14 @@ public class ControlSystem extends Thread {
             waitFor(1);
             tls.Map.lightColour[1] = RED;
             tls.Map.lightColour[3] = RED;
-            waitFor(0.5);
+
+            if (buttonPushed) {
+                buttonPushed = false;
+                waitFor(10);
+            } else {
+                waitFor(0.5);
+            }
+
             tls.Map.lightColour[0] = REDAMBER;
             tls.Map.lightColour[2] = REDAMBER;
             waitFor(1);
@@ -74,50 +71,20 @@ public class ControlSystem extends Thread {
             waitFor(1);
             tls.Map.lightColour[0] = RED;
             tls.Map.lightColour[2] = RED;
-            waitFor(0.5);
+            
+            if (buttonPushed) {
+                buttonPushed = false;
+                waitFor(10);
+            } else {
+                waitFor(0.5);
+            }
+            
             tls.Map.lightColour[1] = REDAMBER;
             tls.Map.lightColour[3] = REDAMBER;
             waitFor(1);
             tls.Map.lightColour[1] = GREEN;
             tls.Map.lightColour[3] = GREEN;
         }
-    }
-
-    private void buttonPushed() {
-        if (step) {
-            // Starting on red
-            waitFor(2);
-            tls.Map.lightColour[1] = AMBER;
-            tls.Map.lightColour[3] = AMBER;
-            waitFor(1);
-            tls.Map.lightColour[1] = RED;
-            tls.Map.lightColour[3] = RED;
-        } else {
-            //starting on green
-            waitFor(2);
-            tls.Map.lightColour[0] = AMBER;
-            tls.Map.lightColour[2] = AMBER;
-
-            waitFor(1);
-            tls.Map.lightColour[0] = RED;
-            tls.Map.lightColour[2] = RED;
-
-        }
-        waitFor(5);
-        if (step) {
-            tls.Map.lightColour[0] = REDAMBER;
-            tls.Map.lightColour[2] = REDAMBER;
-            waitFor(1);
-            tls.Map.lightColour[0] = GREEN;
-            tls.Map.lightColour[2] = GREEN;
-        } else {
-            tls.Map.lightColour[1] = REDAMBER;
-            tls.Map.lightColour[3] = REDAMBER;
-            waitFor(1);
-            tls.Map.lightColour[1] = GREEN;
-            tls.Map.lightColour[3] = GREEN;
-        }
-
     }
 
     private int processSequence() {

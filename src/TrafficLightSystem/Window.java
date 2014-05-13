@@ -3,17 +3,21 @@ package TrafficLightSystem;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Timer;
+import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
@@ -21,7 +25,7 @@ import javax.swing.JSplitPane;
  *
  * @author Group 3
  */
-public class Window extends JPanel implements KeyListener, ActionListener {
+public class Window extends JPanel implements ActionListener, ItemListener {
 
     public static final int RED = 0;
     public static final int REDAMBER = 1;
@@ -37,10 +41,11 @@ public class Window extends JPanel implements KeyListener, ActionListener {
     public int tileWidth = 64;
     public int xPos = -160;
     public int yPos = 160;
-    public int speed = 10;
     public TrafficData carPos[] = new TrafficData[4];
     public int[] lightColour = new int[4];
-    JButton holdWE, holdNS, button;
+    JButton button;
+    JCheckBox hold;
+    Timer t;
 
     public Window(TrafficLightSystem _tls) {
         tls = _tls;
@@ -52,20 +57,14 @@ public class Window extends JPanel implements KeyListener, ActionListener {
         lightColour[1] = GREEN;
         lightColour[2] = RED;
         lightColour[3] = GREEN;
-//=================================================================
         JPanel ControlPanel = new JPanel();
-
-        holdWE = new JButton("Hold Lights 1 & 3");
-        holdWE.addActionListener(this);
-
-        holdNS = new JButton("Hold Lights 2 & 4");
-        holdNS.addActionListener(this);
+        hold = new JCheckBox("Hold Lights");
+        hold.addItemListener(this);
 
         button = new JButton("Pedestrian Crossing");
         button.addActionListener(this);
 
-        ControlPanel.add(holdWE);
-        ControlPanel.add(holdNS);
+        ControlPanel.add(hold);
         ControlPanel.add(button);
 
         JFrame aFrame = new JFrame();
@@ -77,10 +76,14 @@ public class Window extends JPanel implements KeyListener, ActionListener {
         aFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         aFrame.pack();
         aFrame.setSize(655, 450);
+        Toolkit toolkit = Toolkit.getDefaultToolkit();
+        Dimension screenSize = toolkit.getScreenSize();
+        int x = (screenSize.width - (aFrame.getWidth())) / 2;
+        int y = (screenSize.height - (aFrame.getHeight())) / 2;
+        aFrame.setLocation(x, y);
         aFrame.setResizable(false);
         aFrame.setVisible(true);
 
-        //=====================================================================
         Path current = Paths.get("");
         String s = current.toAbsolutePath().toString();
         try {
@@ -89,8 +92,6 @@ public class Window extends JPanel implements KeyListener, ActionListener {
             System.err.println(e.getMessage());
         }
         imgSprite = getSpriteImg();
-        this.addKeyListener(this);
-        this.setFocusable(true);
     }
 
     @Override
@@ -440,7 +441,7 @@ public class Window extends JPanel implements KeyListener, ActionListener {
     }
 
     private void animateCars0to2() {
-      carPos[0] = new TrafficData(0, 2);
+        carPos[0] = new TrafficData(0, 2);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -486,7 +487,7 @@ public class Window extends JPanel implements KeyListener, ActionListener {
     }
 
     private void animateCars1to2() {
-                carPos[1] = new TrafficData(1, 2);
+        carPos[1] = new TrafficData(1, 2);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -533,7 +534,7 @@ public class Window extends JPanel implements KeyListener, ActionListener {
     }
 
     private void animateCars1to0() {
-                carPos[1] = new TrafficData(1, 0);
+        carPos[1] = new TrafficData(1, 0);
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -697,81 +698,43 @@ public class Window extends JPanel implements KeyListener, ActionListener {
         t.start();
     }
 
-    private void plusOffsetX() {
-
-        if ((this.getWidth() / 2) > (((0 * tileWidth / 2) + (0 * tileWidth / 2)) + xPos)) {
-            xPos = xPos + speed;
-        }
-    }
-
-    private void plusOffsetY() {
-        if ((this.getHeight() / 2) > (((0 * tileHeight / 2) - (mapWidth * tileHeight / 2)) + yPos)) {
-            yPos = yPos + speed;
-        }
-    }
-
-    private void minusOffsetX() {
-        if ((this.getWidth() / 2) < (((mapHeigh * tileWidth / 2) + (mapWidth * tileWidth / 2)) + xPos)) {
-            xPos = xPos - speed;
-        }
-    }
-
-    private void minusOffsetY() {
-        if ((this.getHeight() / 2) < (((mapHeigh * tileHeight / 2) - (0 * tileHeight / 2)) + yPos)) {
-            yPos = yPos - speed;
-        }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_LEFT:
-                plusOffsetX();
-                break;
-            case KeyEvent.VK_RIGHT:
-                minusOffsetX();
-                break;
-            case KeyEvent.VK_UP:
-                plusOffsetY();
-                break;
-            case KeyEvent.VK_DOWN:
-                minusOffsetY();
-                break;
-        }
-        repaint();
-    }
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-            case KeyEvent.VK_LEFT:
-                plusOffsetX();
-                break;
-            case KeyEvent.VK_RIGHT:
-                minusOffsetX();
-                break;
-            case KeyEvent.VK_UP:
-                plusOffsetY();
-                break;
-            case KeyEvent.VK_DOWN:
-                minusOffsetY();
-                break;
-        }
-        repaint();
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
-
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == button) {
             tls.controlSystem.buttonPushed = true;
-        } else if (e.getSource() == holdWE) {
-            tls.controlSystem.holdEW = true;
-        } else if (e.getSource() == holdNS) {
-            tls.controlSystem.holdNS = true;
+        }
+    }
+
+    @Override
+    public void itemStateChanged(ItemEvent e) {
+        if (e.getStateChange() == ItemEvent.SELECTED) {
+            tls.controlSystem.hold = true;
+            t = new Timer();
+            t.schedule(new TimerTask() {
+                @Override
+                public void run() {
+                    //JOptionPane.showMessageDialog(null,,,JOptionPane.WARNING_MESSAGE);
+
+                    Object[] options = {"Release Lights",
+                        "Keep Holding Lights"};
+                    int n = JOptionPane.showOptionDialog(null,
+                            "This has been held for a long time. \nWould you like to release it?",
+                            "Release Lights?",
+                            JOptionPane.YES_NO_OPTION,
+                            JOptionPane.WARNING_MESSAGE,
+                            null, //do not use a custom Icon
+                            options, //the titles of buttons
+                            options[0]); //default button title
+
+                    if (n == JOptionPane.YES_OPTION) {
+                        tls.Map.hold.setSelected(false);
+                    }
+                }
+            }, 20 * 1000);
+
+        } else if (e.getStateChange() == ItemEvent.DESELECTED) {
+            tls.controlSystem.hold = false;
+            t.cancel();
         }
     }
 }
