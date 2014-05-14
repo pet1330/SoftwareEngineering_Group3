@@ -17,6 +17,7 @@ class ReceivedThread implements Runnable {
     TrafficLightSystem ControlCentre;
 
     public ReceivedThread(Socket sock, TrafficLightSystem syst) {
+        // Assign the socket to a global variable for use within this class
         socket = sock;
         ControlCentre = syst;
     }
@@ -26,10 +27,10 @@ class ReceivedThread implements Runnable {
         try {
             recieve = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             String msgRecieved;
+            
+            // Check to see if a message has been recieved
             while ((msgRecieved = recieve.readLine()) != null) {
 
-                // Display the message received
-                //System.out.println("Received : " + msgRecieved);
                 // Remove the ; from the end of the string
                 if (msgRecieved.endsWith(";")) {
                     msgRecieved = msgRecieved.substring(0, msgRecieved.length() - 1);

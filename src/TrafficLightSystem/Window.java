@@ -377,40 +377,40 @@ public class Window extends JPanel implements ActionListener, ItemListener {
 
         if (start == 0 && end == 1) {
             animateCars0to1();
-            System.out.println("0:1;");
+            //System.out.println("0:1;");
         } else if (start == 0 && end == 2) {
             animateCars0to2();
-            System.out.println("0:2;");
+            //System.out.println("0:2;");
         } else if (start == 0 && end == 3) {
             animateCars0to3();
-            System.out.println("0:3;");
+            //System.out.println("0:3;");
         } else if (start == 1 && end == 2) {
             animateCars1to2();
-            System.out.println("1:2;");
+            //System.out.println("1:2;");
         } else if (start == 1 && end == 3) {
             animateCars1to3();
-            System.out.println("1:3;");
+            //System.out.println("1:3;");
         } else if (start == 1 && end == 0) {
             animateCars1to0();
-            System.out.println("1:0;");
+            //System.out.println("1:0;");
         } else if (start == 2 && end == 3) {
             animateCars2to3();
-            System.out.println("2:3;");
+            //System.out.println("2:3;");
         } else if (start == 2 && end == 0) {
             animateCars2to0();
-            System.out.println("2:0;");
+            //System.out.println("2:0;");
         } else if (start == 2 && end == 1) {
             animateCars2to1();
-            System.out.println("2:1;");
+            //System.out.println("2:1;");
         } else if (start == 3 && end == 0) {
             animateCars3to0();
-            System.out.println("3:0;");
+            //System.out.println("3:0;");
         } else if (start == 3 && end == 1) {
             animateCars3to1();
-            System.out.println("3:1;");
+            //System.out.println("3:1;");
         } else if (start == 3 && end == 2) {
             animateCars3to2();
-            System.out.println("3:2;");
+            //System.out.println("3:2;");
         }
     }
 

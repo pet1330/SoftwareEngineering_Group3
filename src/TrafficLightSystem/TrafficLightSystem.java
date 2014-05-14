@@ -17,6 +17,7 @@ public class TrafficLightSystem {
     Thread thread, thread2;
     public boolean run = true;
 
+    // Traffic light array lists (used for storing the number of vehicles at each light)
     volatile ConcurrentLinkedQueue<TrafficData> Light1 = new ConcurrentLinkedQueue<>();
     volatile ConcurrentLinkedQueue<TrafficData> Light2 = new ConcurrentLinkedQueue<>();
     volatile ConcurrentLinkedQueue<TrafficData> Light3 = new ConcurrentLinkedQueue<>();
@@ -65,6 +66,7 @@ public class TrafficLightSystem {
         run = false;
     }
 
+    // Add a vehicle to the correct traffic light list
     public void addToList(String start, String end) {
         int s = Integer.parseInt(start);
         int e = Integer.parseInt(end);
@@ -87,6 +89,7 @@ public class TrafficLightSystem {
         }
     }
 
+    // Report on the current traffic light stats (number of vehicles at each light)
     public void reportTrafficLightStatus(Boolean sendToServer) {
         if (sendToServer == true) {
             String report = "";
@@ -106,9 +109,9 @@ public class TrafficLightSystem {
         }
     }
 
+    // Process the commands sent from clients server (getstate; will reutrn the light stats)
     public void process(String toProcess) {
         if (toProcess.toLowerCase().trim().equals("getstate;")) {
-            // TODO LOGIC CODE HERE
             reportTrafficLightStatus(true);
         } else {
             String[] split = toProcess.split(":");
@@ -119,6 +122,7 @@ public class TrafficLightSystem {
     }
 
     public static void main(String[] args) {
+        // Start the system
         StartSystem();
     }
 }

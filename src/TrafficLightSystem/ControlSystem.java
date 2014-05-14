@@ -26,13 +26,14 @@ public class ControlSystem extends Thread {
         while (true) {
             int beenProcessed = 0;
 
-            while (((processSequence() > 0) || (beenProcessed < 5)) && (beenProcessed < 10)) // Process current queues
+            // Process the current traffic light queues (this changes the light sequence to allow vehicles to pass)
+            while (((processSequence() > 0) || (beenProcessed < 5)) && (beenProcessed < 10))
             {
-
                 beenProcessed++;
                 waitFor(1);
             }
 
+            // Hold the traffic lights in their current sequence
             if (!hold) {
                 // Change the light processSequence
                 changeLights();
@@ -41,6 +42,7 @@ public class ControlSystem extends Thread {
         }
     }
 
+    // Change the light sequence 
     public void changeLights() {
         if (step) {
             // Starting on red
@@ -87,6 +89,7 @@ public class ControlSystem extends Thread {
         }
     }
 
+    // Process the light sequence for the GUI
     private int processSequence() {
         int processed = 0;
         TrafficData remove;
@@ -122,6 +125,7 @@ public class ControlSystem extends Thread {
         return processed;
     }
 
+    // Pause the system processing for a specific amount of time
     private void waitFor(double seconds) {
         long startTime = System.currentTimeMillis();
         while ((System.currentTimeMillis() - startTime) < (1000 * seconds)) {

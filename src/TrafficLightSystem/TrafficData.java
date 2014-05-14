@@ -6,6 +6,8 @@ package TrafficLightSystem;
  */
 public class TrafficData {
 
+    // Used for storing the traffic data. E.g. vehicle start and end positions
+    
     public static final int fromW = 0;
     public static final int fromN = 1;
     public static final int fromE = 2;
